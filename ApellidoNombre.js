@@ -12,28 +12,28 @@ class Usuario {
 
     addMascota(nombreMascota) {
         this.mascotas.push(nombreMascota)
-        return (this.mascotas)
     }
 
     countMascotas() {
        let cantidadMascotas = this.mascotas.length
-       return (`Cantidad de Mascotas = ${cantidadMascotas}`)
+       console.log(`Cantidad de Mascotas = ${cantidadMascotas}`)
+       return cantidadMascotas
     }
 
     addBook(nombreLibro, autor) {
         this.libros.push({nombre: nombreLibro, autorLibro: autor})
-        return (this.libros)
     }
 
     getBookNames() {
-        this.libros.map(function(lib) {
-            return console.log(lib.nombre)
+        let bookNames = this.libros.map(function(libro) {
+            console.log(libro.nombre)
+            return libro.nombre
         })
-
+        return bookNames
     }
 }
 
-const usuario = new Usuario ("Federico", "Leon", "Harry Potter", "Perro")
+const usuario = new Usuario ("Federico", "Leon", ["Harry Potter", "Las enseñanzas de Don Juan", "Asi hablo Zaratustra"], ["Perro", "Gato", "Loro"])
 
 console.log(usuario);
 console.log(usuario.getFullName())
