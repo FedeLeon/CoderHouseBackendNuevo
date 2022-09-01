@@ -19,17 +19,19 @@ class Contenedor {
             console.log(inventary)
             if (!inventary) {
                 console.log(`Se agrego el objeto, ID asignado: ${Contenedor.idContador}`)
+                obj.id = Contenedor.idContador
                 Contenedor.idContador++
                 const arrObjs = [obj]
                 await fs.promises.writeFile(`${this.nombreArchivo}`, JSON.stringify(arrObjs))
-                return Contenedor.idContador
+                return obj.id
             } else {
                 console.log(`Se agrego el objeto, ID asignado: ${Contenedor.idContador}`)
+                obj.id = Contenedor.idContador
                 Contenedor.idContador++
                 inventary = JSON.parse(inventary);
                 inventary.push(obj)
                 await fs.promises.writeFile(`${this.nombreArchivo}`, JSON.stringify(inventary))
-                return Contenedor.idContador
+                return obj.id
             }
         } catch (err) {
             console.log(`No se pudeo agregar el objeto: ${err}`)
@@ -100,9 +102,9 @@ class Contenedor {
 const contenedorProductos = new Contenedor("productos.txt")
 
 async function ProbarMetodos() {
-    await contenedorProductos.save({ title: "cartuchera", price: 100, thumbnail: "https://d3ugyf2ht6aenh.cloudfront.net/stores/891/147/products/15222071-151595990d47d4f35b16467701309837-1024-1024.jpg", id: Contenedor.idContador })
-    await contenedorProductos.save({ title: "lapiz", price: 300, thumbnail: "https://papeleria24h.files.wordpress.com/2019/03/punta-lapiz-staedtler-tradition-110.jpg?w=982", id: Contenedor.idContador })
-    await contenedorProductos.save({ title: "carpeta", price: 500, thumbnail: "https://www.rioshopdeco.com.ar/6534-large_default/carpeta-pp-tonalizada-escolar-3x40-azul-art-5401.jpg", id: Contenedor.idContador })
+    await contenedorProductos.save({ title: "cartuchera", price: 100, thumbnail: "https://d3ugyf2ht6aenh.cloudfront.net/stores/891/147/products/15222071-151595990d47d4f35b16467701309837-1024-1024.jpg"})
+    await contenedorProductos.save({ title: "lapiz", price: 300, thumbnail: "https://papeleria24h.files.wordpress.com/2019/03/punta-lapiz-staedtler-tradition-110.jpg?w=982"})
+    await contenedorProductos.save({ title: "carpeta", price: 500, thumbnail: "https://www.rioshopdeco.com.ar/6534-large_default/carpeta-pp-tonalizada-escolar-3x40-azul-art-5401.jpg"})
     await contenedorProductos.getById(2)
     await contenedorProductos.getAll
     await contenedorProductos.deleteById(2)
