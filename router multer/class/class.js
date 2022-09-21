@@ -1,24 +1,3 @@
-let productosArray = [
-    {
-      "title": "Escuadra",
-      "price": 123.45,
-      "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png",
-      "id": 1
-    },
-    {
-      "title": "Calculadora",
-      "price": 234.56,
-      "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-256.png",
-      "id": 2
-    },
-    {
-      "title": "Globo Terráqueo",
-      "price": 345.67,
-      "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png",
-      "id": 3
-    }
-]
-
 //CONTENEDOR
 
 class Contenedor {
@@ -26,14 +5,14 @@ class Contenedor {
         this.arrayProductos = arrayProductos
     }
         
-    static idContador = productosArray.length + 1
+    static idContador = 1
 
     // devolver un array de objetos con todos los objetos que esten el archivo 
 
     async getAll() {
         try {
            let contenido = this.arrayProductos
-           return await contenido
+           return contenido
         } catch (err) {
             console.log(`Error: ${err}`)
         }
@@ -41,16 +20,14 @@ class Contenedor {
 
     // recibe un id y devuelve el objeto con ese id si no existe devolver null
 
-    async getById(id) {
+   async getById(id) {
         try {
             let contenido = this.arrayProductos
             let objetoEncontrado = contenido.find(i => i.id === id)
             if (objetoEncontrado) {
-                console.log(`El ID pertenece al objeto: ${objetoEncontrado.title}`)
                 return objetoEncontrado
             } else {
-                console.log(`El ID no pertenece a ningun objeto`)
-                return null
+                return { error: 'producto no encontrado' }
             }
 
         } catch (err) {
@@ -64,6 +41,7 @@ class Contenedor {
         try {
             let id = Contenedor.idContador
             let nuevoProducto = {...producto , id : id }
+            Contenedor.idContador++
             this.arrayProductos.push(nuevoProducto)
             console.log(`Objeto con id : ${nuevoProducto.id} agregado`)
             return nuevoProducto
@@ -80,9 +58,12 @@ class Contenedor {
             contenido.forEach(producto => {
              if(producto.id === id) {
                 producto = nuevoProducto
+                console.log(`Objeto con id : ${nuevoProducto.id} modificado`)
+             } else {
+                return { error: 'producto no encontrado' }
              }
             })
-            console.log(`Objeto con id : ${nuevoProducto.id} modificado`)
+            
         } catch (err) {
             console.log(`No se encontro el objeto con ese ID : ${err}`)
         }
@@ -93,15 +74,19 @@ class Contenedor {
     async deleteById(id) {
         try {
             let contenido = this.arrayProductos
-            let contenidoFiltrado = contenido.filter(i => i.id != id)
-            this.arrayProductos = contenidoFiltrado
-            console.log(`Objeto con id : ${id} eliminado`)
+            let objetoEncontrado = contenido.find(i => i.id === id)
+            if (objetoEncontrado) {
+                let contenidoFiltrado = contenido.filter(i => i.id != id)
+                this.arrayProductos = contenidoFiltrado
+                console.log(`Objeto con id : ${id} eliminado`)
+            } else {
+                return { error: 'producto no encontrado' }
+            }
         } catch (err) {
             console.log(`Hubo un error en recuperar el objeto por ID : ${err}`)
         }
     }
 }
 
-const ContenedorProductos = new Contenedor(productosArray)
 
-module.exports = ContenedorProductos;
+module.exports = Contenedor
